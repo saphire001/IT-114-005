@@ -177,7 +177,7 @@ public class NumGuessHW
 		try (Scanner reader = new Scanner(file)) {
 			while (reader.hasNextLine()) {
 				int S = reader.nextInt();
-				if(S > 0)
+				if(S > 0 && S < maxStrikes)
 				{
 					strikes = S;
 				}
