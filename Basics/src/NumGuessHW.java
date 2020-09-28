@@ -93,7 +93,7 @@ public class NumGuessHW
 	
 	private void saveNum() {
 		try (FileWriter f = new FileWriter(saveFile)) {
-			f.write("" + number);// here we need to convert it to a String to record correctly
+			f.write("" + number);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
