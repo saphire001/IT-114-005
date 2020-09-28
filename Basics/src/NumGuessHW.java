@@ -55,6 +55,7 @@ public class NumGuessHW
 	}
 
 	private void processGuess(int guess) {
+		saveNum();
 		if (guess < 0) {
 			return;
 		}
@@ -64,6 +65,7 @@ public class NumGuessHW
 		} else {
 			System.out.println("That's wrong");
 			strikes++;
+			saveStrikes();
 			if (strikes >= maxStrikes) {
 				lose();
 			} else {
@@ -87,6 +89,38 @@ public class NumGuessHW
 
 		}
 		return guess;
+	}
+	
+	private void saveNum() {
+		try (FileWriter f = new FileWriter(saveFile)) {
+			f.write("" + number);// here we need to convert it to a String to record correctly
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private boolean loadNum() {
+		File file = new File(saveFile);
+		if (!file.exists()) {
+			return false;
+		}
+		try (Scanner reader = new Scanner(file)) {
+			while (reader.hasNextLine()) {
+				int N = reader.nextInt();
+				if (N >= 1) {
+					number = N;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			return false;
+		}
+		return number >= 1;
 	}
 
 	private void saveLevel() {
@@ -120,6 +154,46 @@ public class NumGuessHW
 		}
 		return level > 1;
 	}
+	
+	private void saveStrikes()
+	{
+		try (FileWriter F = new FileWriter(saveFile)) {
+			if(strikes < maxStrikes)
+			{
+				F.write("" + strikes);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean loadStrikes()
+	{
+		File file = new File(saveFile);
+		if (!file.exists()) {
+			return false;
+		}
+		try (Scanner reader = new Scanner(file)) {
+			while (reader.hasNextLine()) {
+				int S = reader.nextInt();
+				if(S > 0)
+				{
+					strikes = S;
+				}
+			}
+			
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			return false;
+		}
+		return strikes > 0;
+	}
+	
 
 	void run() {
 		try (Scanner input = new Scanner(System.in);) {
@@ -128,6 +202,10 @@ public class NumGuessHW
 					+ " attempts to guess.");
 			if (loadLevel()) {
 				System.out.println("Successfully loaded level " + level + " let's continue then");
+			}
+			if (loadStrikes())
+			{
+				System.out.println("You have " + strikes + " stikes");
 			}
 			number = getNumber(level);
 			isRunning = true;
@@ -140,7 +218,9 @@ public class NumGuessHW
 				int guess = getGuess(message);
 				processGuess(guess);
 			}
-
+					
+			loadNum();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
