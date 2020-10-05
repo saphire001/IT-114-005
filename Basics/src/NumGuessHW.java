@@ -9,7 +9,7 @@ public class NumGuessHW
 {
 	private int level = 1;
 	private int strikes = 0;
-	private int maxStrikes = 5;
+	private int maxStrikes = 10;
 	private int number = 0;
 	private boolean isRunning = false;
 	final String saveFile = "numberGuesserSave.txt";
