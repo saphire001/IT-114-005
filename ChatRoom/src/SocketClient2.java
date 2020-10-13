@@ -135,7 +135,7 @@ public class SocketClient2 {
 	}
 
 	public static void main(String[] args) {
-		SocketClient client = new SocketClient();
+		SocketClient2 client = new SocketClient2();
 		int port = -1;
 		try {
 			// not safe but try-catch will get it
