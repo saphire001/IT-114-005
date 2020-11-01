@@ -1,7 +1,12 @@
+
+package server;
 import java.io.Serializable;
 
 public class Payload implements Serializable {
 
+    /**
+     * baeldung.com/java-serial-version-uid
+     */
     private static final long serialVersionUID = -6687715510484845706L;
 
     private String clientName;
