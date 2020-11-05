@@ -78,7 +78,7 @@ public class ClientUI extends JFrame implements Event {
 
 		});
 		panel.add(button);
-		this.add(panel);
+    	this.add(panel);
 	}
 
 	void createUserInputScreen() {

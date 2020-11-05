@@ -161,7 +161,7 @@ public class SocketClient2 {
 		}
 		if (clientThread != null) {
 			clientThread.interrupt();
-			clientThread = null;
+		    clientThread = null;
 		}
 		log.log(Level.INFO, "Client Started");
 	    clientThread = new Thread() {
