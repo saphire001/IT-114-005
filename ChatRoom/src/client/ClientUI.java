@@ -42,7 +42,7 @@ public class ClientUI extends JFrame implements Event {
 		createPanelRoom();
 		showUI();
 	}
-
+	
 	void createConnectionScreen() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

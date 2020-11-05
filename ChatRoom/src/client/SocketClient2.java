@@ -160,7 +160,7 @@ public class SocketClient2 {
 			clientThread = null;
 		}
 		log.log(Level.INFO, "Client Started");
-		clientThread = new Thread() {
+	    clientThread = new Thread() {
 			@Override
 			public void run() {
 
