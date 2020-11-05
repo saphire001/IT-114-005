@@ -1,4 +1,3 @@
-
 package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,10 +8,10 @@ import java.util.logging.Logger;
 
 public class ServerThread extends Thread {
     private Socket client;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private ObjectInputStream in;// from client
+    private ObjectOutputStream out;// to client
     private boolean isRunning = false;
-    private Room currentRoom;
+    private Room currentRoom;// what room we are in, should be lobby by default
     private String clientName;
     private final static Logger log = Logger.getLogger(ServerThread.class.getName());
 
@@ -40,10 +39,15 @@ public class ServerThread extends Thread {
 	in = new ObjectInputStream(client.getInputStream());
     }
 
-    
+    /***
+     * Sends the message to the client represented by this ServerThread
+     * 
+     * @param message
+     * @return
+     */
     @Deprecated
     protected boolean send(String message) {
-	
+	// added a boolean so we can see if the send was successful
 	try {
 	    out.writeObject(message);
 	    return true;
@@ -56,7 +60,14 @@ public class ServerThread extends Thread {
 	}
     }
 
-   
+    /***
+     * Replacement for send(message) that takes the client name and message and
+     * converts it into a payload
+     * 
+     * @param clientName
+     * @param message
+     * @return
+     */
     protected boolean send(String clientName, String message) {
 	Payload payload = new Payload();
 	payload.setPayloadType(PayloadType.MESSAGE);
@@ -91,11 +102,15 @@ public class ServerThread extends Thread {
 	}
     }
 
-    
+    /***
+     * Process payloads we receive from our client
+     * 
+     * @param p
+     */
     private void processPayload(Payload p) {
 	switch (p.getPayloadType()) {
 	case CONNECT:
-	    
+	    // here we'll fetch a clientName from our client
 	    String n = p.getClientName();
 	    if (n != null) {
 		clientName = n;
@@ -106,7 +121,7 @@ public class ServerThread extends Thread {
 	    }
 	    break;
 	case DISCONNECT:
-	    isRunning = false;
+	    isRunning = false;// this will break the while loop in run() and clean everything up
 	    break;
 	case MESSAGE:
 	    currentRoom.sendMessage(this, p.getMessage());
@@ -122,17 +137,17 @@ public class ServerThread extends Thread {
 	try {
 	    isRunning = true;
 	    Payload fromClient;
-	    while (isRunning && 
-		    !client.isClosed() 
-		    && (fromClient = (Payload) in.readObject()) != null 
-									
+	    while (isRunning && // flag to let us easily control the loop
+		    !client.isClosed() // breaks the loop if our connection closes
+		    && (fromClient = (Payload) in.readObject()) != null // reads an object from inputStream (null would
+									// likely mean a disconnect)
 	    ) {
 		System.out.println("Received from client: " + fromClient);
 		processPayload(fromClient);
-	    }
+	    } // close while loop
 	}
 	catch (Exception e) {
-	   
+	    // happens when client disconnects
 	    e.printStackTrace();
 	    log.log(Level.INFO, "Client Disconnected");
 	}

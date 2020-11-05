@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import server.Payload;
 import server.PayloadType;
-
+//part 6
 public class SocketClient2 {
 	private static Socket server;
 	private static Thread fromServerThread;
@@ -54,13 +54,13 @@ public class SocketClient2 {
 			log.log(Level.INFO, "Server Listener is likely already running");
 			return;
 		}
-		
+		// Thread to listen for responses from server so it doesn't block main thread
 		fromServerThread = new Thread() {
 			@Override
 			public void run() {
 				try {
 					Payload fromServer;
-					
+					// while we're connected, listen for Payloads from server
 					while (!server.isClosed() && (fromServer = (Payload) in.readObject()) != null) {
 						processPayload(fromServer);
 					}
@@ -80,10 +80,14 @@ public class SocketClient2 {
 				}
 			}
 		};
-		fromServerThread.start();
+		fromServerThread.start();// start the thread
 	}
 
-	
+	/***
+	 * Determine any special logic for different PayloadTypes
+	 * 
+	 * @param p
+	 */
 	private static void processPayload(Payload p) {
 
 		switch (p.getPayloadType()) {
