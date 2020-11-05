@@ -176,5 +176,4 @@ public class Room implements AutoCloseable {
 	name = null;
 	// should be eligible for garbage collection now
     }
-
 }

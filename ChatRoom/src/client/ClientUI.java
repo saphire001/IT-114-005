@@ -22,7 +22,9 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 public class ClientUI extends JFrame implements Event {
-	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	CardLayout card;
 	ClientUI self;
@@ -136,7 +138,14 @@ public class ClientUI extends JFrame implements Event {
 		this.add(panel);
 	}
 
-	
+	/***
+	 * Attempts to calculate the necessary dimensions for a potentially wrapped
+	 * string of text. This isn't perfect and some extra whitespace above or below
+	 * the text may occur
+	 * 
+	 * @param str
+	 * @return
+	 */
 	int calcHeightForText(String str) {
 		FontMetrics metrics = self.getGraphics().getFontMetrics(self.getFont());
 		int hgt = metrics.getHeight();
