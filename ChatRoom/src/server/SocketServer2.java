@@ -186,6 +186,20 @@ public class SocketServer2 {
 	    return true;
 	}
     }
+    
+    protected synchronized boolean flip (String roomName, ServerThread client)
+    {
+    	if (Math.random() < 0.5)
+    	{
+    		log.log(Level.INFO, client.getClientName() + "got Heads");
+    		return false;
+    	}
+    	else
+    	{
+    		log.log(Level.INFO, client.getClientName() + "got Tails" );
+    		return true; 
+    	}
+    }
 
     public static void main(String[] args) {
 	// let's allow port to be passed as a command line arg
